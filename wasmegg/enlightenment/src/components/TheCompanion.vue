@@ -465,14 +465,6 @@ export default defineComponent({
     const currentTimestamp = ref(Date.now());
     const lastRefreshedRelative = ref(lastRefreshed.fromNow());
     const lastRefreshedPopulation = farm.numChickens! as number;
-    const currentPopulation = computed(
-      () =>
-        Math.min(
-          totalHabSpace,
-          lastRefreshedPopulation +
-            (offlineIHR / 60_000) * (currentTimestamp.value - lastRefreshedTimestamp)
-        )
-    );
     const artifacts = homeFarmArtifacts(backup);
     // Cap existing trophy level at platinum for people doing a legit diamond
     // run after cheating it first.
@@ -492,6 +484,14 @@ export default defineComponent({
     const habSpaces = farmHabSpaces(habs, habSpaceResearches, artifacts);
     const totalHabSpace = Math.round(habSpaces.reduce((total, s) => total + s));
     const totalHabSpaceSufficient = totalHabSpace >= 1e10;
+    const currentPopulation = computed(
+      () =>
+        Math.min(
+          totalHabSpace,
+          lastRefreshedPopulation +
+            (offlineIHR / 60_000) * (currentTimestamp.value - lastRefreshedTimestamp)
+        )
+    );
     const currentWDLevel = farmCurrentWDLevel(farm);
     const requiredWDLevel = requiredWDLevelForEnlightenmentDiamond(
       nakedGangNickname ? [] : artifacts
