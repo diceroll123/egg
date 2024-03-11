@@ -467,8 +467,11 @@ export default defineComponent({
     const lastRefreshedPopulation = farm.numChickens! as number;
     const currentPopulation = computed(
       () =>
-        lastRefreshedPopulation +
-        (offlineIHR / 60_000) * (currentTimestamp.value - lastRefreshedTimestamp)
+        Math.min(
+          totalHabSpace,
+          lastRefreshedPopulation +
+            (offlineIHR / 60_000) * (currentTimestamp.value - lastRefreshedTimestamp)
+        )
     );
     const artifacts = homeFarmArtifacts(backup);
     // Cap existing trophy level at platinum for people doing a legit diamond
